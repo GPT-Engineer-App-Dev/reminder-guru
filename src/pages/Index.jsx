@@ -1,6 +1,19 @@
-import { Container, Text, VStack, Heading, Box, Flex } from "@chakra-ui/react";
+import { useState } from "react";
+import { Container, Text, VStack, Heading, Box, Flex, Input, Button, List, ListItem } from "@chakra-ui/react";
 
 const Index = () => {
+  const [todos, setTodos] = useState([]);
+  const [todoText, setTodoText] = useState("");
+
+  const handleInputChange = (e) => setTodoText(e.target.value);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (todoText.trim() === "") return;
+    setTodos([...todos, todoText]);
+    setTodoText("");
+  };
+
   return (
     <Container maxW="container.xl" p={0}>
       <Flex direction="column" minH="100vh">
@@ -10,7 +23,24 @@ const Index = () => {
         <Box as="main" flex="1" p={4}>
           <VStack spacing={4}>
             <Heading as="h2" size="lg">Your Todo List</Heading>
-            <Text fontSize="md">This is where your todo list and form will be displayed.</Text>
+            <form onSubmit={handleFormSubmit}>
+              <Flex>
+                <Input
+                  placeholder="Enter a new todo"
+                  value={todoText}
+                  onChange={handleInputChange}
+                  mr={2}
+                />
+                <Button type="submit" colorScheme="teal">Add Todo</Button>
+              </Flex>
+            </form>
+            <List spacing={3} width="100%">
+              {todos.map((todo, index) => (
+                <ListItem key={index} bg="gray.100" p={2} borderRadius="md">
+                  {todo}
+                </ListItem>
+              ))}
+            </List>
           </VStack>
         </Box>
         <Box as="footer" bg="gray.700" color="white" py={2} textAlign="center">
