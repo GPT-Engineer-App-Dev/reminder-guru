@@ -1,17 +1,37 @@
 import { useState } from "react";
-import { Container, Text, VStack, Heading, Box, Flex, Input, Button, List, ListItem } from "@chakra-ui/react";
+import { Container, Text, VStack, Heading, Box, Flex, Input, Button, List, ListItem, IconButton } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 
 const Index = () => {
   const [todos, setTodos] = useState([]);
   const [todoText, setTodoText] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTodoIndex, setCurrentTodoIndex] = useState(null);
 
   const handleInputChange = (e) => setTodoText(e.target.value);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (todoText.trim() === "") return;
-    setTodos([...todos, todoText]);
+    if (isEditing) {
+      const updatedTodos = todos.map((todo, index) =>
+        index === currentTodoIndex ? todoText : todo
+      );
+      setTodos(updatedTodos);
+      setIsEditing(false);
+      setCurrentTodoIndex(null);
+    } else {
+      setTodos([...todos, todoText]);
+    }
+
     setTodoText("");
+  };
+
+  const handleEditClick = (index) => {
+    setTodoText(todos[index]);
+    setIsEditing(true);
+    setCurrentTodoIndex(index);
   };
 
   return (
@@ -31,13 +51,20 @@ const Index = () => {
                   onChange={handleInputChange}
                   mr={2}
                 />
-                <Button type="submit" colorScheme="teal">Add Todo</Button>
+                <Button type="submit" colorScheme="teal">
+                  {isEditing ? "Update Todo" : "Add Todo"}
+                </Button>
               </Flex>
             </form>
             <List spacing={3} width="100%">
               {todos.map((todo, index) => (
-                <ListItem key={index} bg="gray.100" p={2} borderRadius="md">
+                <ListItem key={index} bg="gray.100" p={2} borderRadius="md" display="flex" justifyContent="space-between" alignItems="center">
                   {todo}
+                  <IconButton
+                    aria-label="Edit Todo"
+                    icon={<EditIcon />}
+                    onClick={() => handleEditClick(index)}
+                  />
                 </ListItem>
               ))}
             </List>
