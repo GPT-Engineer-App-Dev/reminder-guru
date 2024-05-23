@@ -1,16 +1,22 @@
-import { Container, Text, VStack, Heading, Button } from "@chakra-ui/react";
-import { FaRocket } from "react-icons/fa";
+import { Container, Text, VStack, Heading, Box, Flex } from "@chakra-ui/react";
 
 const Index = () => {
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Heading as="h1" size="2xl">Welcome to Your New Website</Heading>
-        <Text fontSize="xl">This is your starting point. Let's build something amazing!</Text>
-        <Button leftIcon={<FaRocket />} colorScheme="teal" size="lg">
-          Get Started
-        </Button>
-      </VStack>
+    <Container maxW="container.xl" p={0}>
+      <Flex direction="column" minH="100vh">
+        <Box as="header" bg="teal.500" color="white" py={4}>
+          <Heading as="h1" size="xl" textAlign="center">Todo App</Heading>
+        </Box>
+        <Box as="main" flex="1" p={4}>
+          <VStack spacing={4}>
+            <Heading as="h2" size="lg">Your Todo List</Heading>
+            <Text fontSize="md">This is where your todo list and form will be displayed.</Text>
+          </VStack>
+        </Box>
+        <Box as="footer" bg="gray.700" color="white" py={2} textAlign="center">
+          <Text fontSize="sm">© 2023 Todo App. All rights reserved.</Text>
+        </Box>
+      </Flex>
     </Container>
   );
 };
